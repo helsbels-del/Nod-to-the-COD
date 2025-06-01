@@ -48,15 +48,29 @@ The plant wants a predictive tool to estimate the COD levels in advance to help 
 
 COD levels vary significantly with seasonal factors such as rainfall and temperature.
 
+or
+
+Higher temperatures are associated with lower COD levels due to increased microbial activity.
+
+- Type: Correlation hypothesis (testable using exploratory data analysis and regression)
+- How to evaluate: Correlation heatmap, scatter plots, linear regression, p-value analysis
+- Business Relevance: Helps operators understand seasonal variation and adapt treatmetn scedules accordingly.
+
 ### Hypothesis 2 (ML-Driven)
 
-COD can be accurately predicted using historical and environmental data.
+COD can be accurately predicted using operational and environmental data.
 
-### Evalution:
+- Type: Predictive hypothesis (requires supervised ML)
+- How to Evaluate: Train/test ML models, measure performance metrics such as R2.
+- Business Relevance: Enables proactive chemicaldosing and treatment adjustments to maintain regulatory compliance.
 
-- Regression model performance using MAE, RMSE, and R2
-- Cross-validation and test-set evaluation
-- Feature importance ranking
+### Hypothesis 3 (Unsupervised Learnign/Clustering)
+
+There are distinct operational profiles or patterns in plant performance that correspond to specific COD behaviour clusters.
+
+- Type: Exploratory hypothesis (requires unsupervised learning)
+- How to Evaluate: Apply clustering (eg KMens, DBSCAN), validate using silhouette score or Davies-Bouldin Index, analyze cluster characterictics.
+- Business Relevance: Allows identification of typical vs atypical plant behaviour abd supports anomoly detection and process optimisation.
 
 ## The rationale to map the business requirements to the Data Visualizations and ML tasks
 
@@ -145,6 +159,7 @@ Ideal Outcome - Operators can be alerted to high risk COD levels in real time to
 
 A predicted class level: 'Low', 'Medium', or 'High', and the probability for each class.
 Used in:
+
 - Real-time dashboard woth traffic lights alerts
 - Automated messages to suggest dosing/flow adjustments when high COD levels are predicted.
 
@@ -161,7 +176,7 @@ No automated risk categorisation currenlty exists. Risk decisions are made after
 
 ### Clustering Model
 
-We want to use unsupervised learning to group similar plant operating conditions that leaad to different COD behaviours. 
+We want to use unsupervised learning to group similar plant operating conditions that leaad to different COD behaviours.
 This model will help to understand plant states and could lead to better process control.
 
 |Ideal Outcome - Operators will gain insight into distinct operating regimes and can understand better when intervention is required, depending on the conditions.
@@ -243,8 +258,8 @@ Structure:
   - COD can be predicted using operational and environmental features.
 - Visualisations used to test each (refer to analysis inssction 2)
 - Summarise findings:
-    - "We observed strong correlation between COD and X, supporting Hypothesis 1."
-    -  "The model achieved R2 of X, supporting Hypothesis 2."
+  - "We observed strong correlation between COD and X, supporting Hypothesis 1."
+  - "The model achieved R2 of X, supporting Hypothesis 2."
 
 #### 4. Technical ML Pipeline Page
 
