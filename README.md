@@ -2,8 +2,8 @@
 
 ## Project Overview
 
-Waste water quality monitoring is an important public health concern. One of the main parameters monitored by industries using water treatment plants is the amount of COD (chemical oxygen demand). This measure the amount of oxygen required to break down organic matter in the water. High COD levels can indicate an ineffiecient treatment in the treatment process.
-Nod to the COD is a data-driven project designed to support wastewater treatmewnt plants in forecasting COD levels using machine learning and data analysis techniques. The goal being to enable proactive decision making by predicting COD levels and identifying the associated factors.
+Waste water quality monitoring is an important public health concern. One of the main parameters monitored by industries using water treatment plants is the amount of COD (chemical oxygen demand). This measures the amount of oxygen required to break down organic matter in the water. High COD levels can indicate an inefficient treatment in the treatment process.
+Nod to the COD is a data-driven project designed to support wastewater treatment plants in forecasting COD levels using machine learning and data analysis techniques. The goal being to enable proactive decision making by predicting COD levels and identifying the associated factors.
 
 ## Dataset Content
 
@@ -12,7 +12,7 @@ The dataset includes 1,382 daily records across 19 features:
 
 - Average outflow
 - Average inflow
-- energy consumption
+- Energy Consumption
 - Ammonia
 - BOD
 - COD
@@ -36,19 +36,15 @@ These variables provide context for understanding and predicting Chemiacl Oxygen
 
 ### Business Requirement 1 - Understanding COD trends
 
-Business stakeholders need insights into how COD levels fluctuate across seasons and treatmetn conditions to help support process improvements and reulatory reporting.
+Business stakeholders need insights into how COD levels fluctuate across seasons and treatment conditions to help support process improvements and regulatory reporting.
 
 ### Business Requirement 2 - Predict COD for operational decison making
 
 The plant wants a predictive tool to estimate the COD levels in advance to help with chemical dosing to help reduce operational costs without comprimising the effluent quality.
 
-## Hypothesis and how to validate?
+## Hypotheses and Validation Strastegies
 
 ### Hypothesis 1 (Conventional analysis)
-
-COD levels vary significantly with seasonal factors such as rainfall and temperature.
-
-or
 
 Higher temperatures are associated with lower COD levels due to increased microbial activity.
 
@@ -62,7 +58,7 @@ COD can be accurately predicted using operational and environmental data.
 
 - Type: Predictive hypothesis (requires supervised ML)
 - How to Evaluate: Train/test ML models, measure performance metrics such as R2.
-- Business Relevance: Enables proactive chemicaldosing and treatment adjustments to maintain regulatory compliance.
+- Business Relevance: Enables proactive chemical dosing and treatment adjustments to maintain regulatory compliance.
 
 ### Hypothesis 3 (Unsupervised Learnign/Clustering)
 
@@ -70,7 +66,7 @@ There are distinct operational profiles or patterns in plant performance that co
 
 - Type: Exploratory hypothesis (requires unsupervised learning)
 - How to Evaluate: Apply clustering (eg KMens, DBSCAN), validate using silhouette score or Davies-Bouldin Index, analyze cluster characterictics.
-- Business Relevance: Allows identification of typical vs atypical plant behaviour abd supports anomoly detection and process optimisation.
+- Business Relevance: Allows identification of typical vs atypical plant behaviour abd supports anomaly detection and process optimisation.
 
 ## The rationale to map the business requirements to the Data Visualizations and ML tasks
 
@@ -109,21 +105,21 @@ MAE (Mean Absolute Error) below 15mg/L on the test set
 
 The model outputs a single numeric value representing hte predicted COD level (in mg/L). This can be:
 
-- Intergrated into a real-time dashboard that shows both predicted and onserved COD levels.
+- Integrated into a real-time dashboard that shows both predicted and onserved COD levels.
 - Used in conjunction with operational rules to flag potential out of acceptable range values.
   
 ### Data Collection and Prediction
 
 - Input Data: Readings from a data collection sensor (SCADA).
 - Prediction Frequency: Daily
-- Deployment - Model can be deployed via API or embedded in an interna; monitoring dashboard.
+- Deployment - Model can be deployed via API or embedded in an internal monitoring dashboard.
 
 ### Current Approach
 
 Operators are currently relying on historical data and chemical dosing experiencs with no formal predictive model.
 This process is reactive rather than proactive and can lead to inefficient dosing and or a breach of compliance.
 
-### Training Data 
+### Training Data
 
 - Dataset includes months of operational data from a wastewater plant.
 - 19 features
@@ -134,7 +130,7 @@ This process is reactive rather than proactive and can lead to inefficient dosin
 
 ### Classification Model
 
-We want an ML model to classify COD readings into risk categories to help operators understand if any intervention is required. 
+We want an ML model to classify COD readings into risk categories to help operators understand if any intervention is required.
 The target is categorical, with 3 classes:
 
 - Low (<50 mg/l)
@@ -144,6 +140,9 @@ The target is categorical, with 3 classes:
 This is a supervised, multi-class, single-label classification task.
 
 Ideal Outcome - Operators can be alerted to high risk COD levels in real time to help improve decsion making and staying in compliance.
+
+Feature importance for classification (eg SHAP values or feature weights).
+Jusitfy how risk thresholds were chosen (eg. domain knowledge or distribution anlysis).
 
 #### Model Success Criteria
 
@@ -160,12 +159,12 @@ Ideal Outcome - Operators can be alerted to high risk COD levels in real time to
 A predicted class level: 'Low', 'Medium', or 'High', and the probability for each class.
 Used in:
 
-- Real-time dashboard woth traffic lights alerts
+- Real-time dashboard with traffic lights alerts
 - Automated messages to suggest dosing/flow adjustments when high COD levels are predicted.
 
 ### Current Approach
 
-No automated risk categorisation currenlty exists. Risk decisions are made after lab results or delayed sensor results interpretation.
+No automated risk categorisation currently exists. Risk decisions are made after lab results or delayed sensor results interpretation.
 
 ### Training Data
 
@@ -179,7 +178,8 @@ No automated risk categorisation currenlty exists. Risk decisions are made after
 We want to use unsupervised learning to group similar plant operating conditions that leaad to different COD behaviours.
 This model will help to understand plant states and could lead to better process control.
 
-|Ideal Outcome - Operators will gain insight into distinct operating regimes and can understand better when intervention is required, depending on the conditions.
+|Ideal Outcome - Operators will gain insight into distinct operating regimes and can understand when intervention is required, depending on the conditions.
+Cluster profiles can guide different operational responses and dosing strategies.
 
 #### Model Success Metrics
 
@@ -201,7 +201,7 @@ This model will help to understand plant states and could lead to better process
 
 ### Current Approach
 
-There is no clear understanding of recurring conditions taht lead to COD instability.
+There is no clear understanding of recurring conditions that lead to COD instability.
 Clustering will give data-driven operating profiles
 
 ### Training Data
@@ -222,7 +222,7 @@ Content to include:
 - Brief Description of the wastewater treatmetn context.
 - Dataset overview (number of rows, key features)
 - Summary of Business Requirements
-  - Undestand patterns influencing COD levles.
+  - Undestand patterns influencing COD levels.
   - Predict COD levels for smarter dosing predictions
 
 Optional Visual elements:
@@ -282,7 +282,7 @@ Optional bonus: Show a simplified flowchart or Sankey diagram of the pipeline.
 ### Epic 1: Data Preparation
 
 - User Story 1.1: As a data scientist, I want to clean and format the sataset so I can analyse any trends and build models.
-- User Story 1.2: As a data scientist, I want to enginerr a date feature to analyse seasonal patterns.
+- User Story 1.2: As a data scientist, I want to engineer a date feature to analyse seasonal patterns.
 
 ### Epic 2: Data Analysis
 
