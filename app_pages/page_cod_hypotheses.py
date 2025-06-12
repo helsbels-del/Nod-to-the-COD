@@ -4,12 +4,13 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import joblib
 
+df = pd.read_csv("outputs/datasets/collection/cleaned_cod_data.csv")
+
 def page_cod_hypotheses_body():
     st.title("🧪 Project Hypotheses and Validation")
-
     st.markdown("This page outlines key project hypotheses, how they were tested, and whether they were supported by the data.")
 
-    # Hypothesis 1 with checkbox toggle and live plot
+    # Hypothesis 1 — Temperature and Feature Correlations
     with st.expander("📌 Hypothesis 1 — Temperature and Feature Correlations with COD"):
         st.markdown("""
         **Hypothesis:** Higher temperatures are associated with lower COD levels due to increased microbial activity.
@@ -33,9 +34,8 @@ def page_cod_hypotheses_body():
             - ❌ **Conclusion:** Not supported. The correlation is weak, with no clear trend.
             """)
 
-        # Custom feature correlation section
+        # Optional feature comparison
         st.markdown("##### 📊 Try another feature vs COD")
-
         if st.checkbox("🔍 Show custom feature comparison with COD"):
             options = [col for col in df.columns if col not in ["Chemical Oxygen Demand", "date"]]
             selected = st.selectbox("Choose a feature to compare with COD:", options)
@@ -48,21 +48,15 @@ def page_cod_hypotheses_body():
             st.pyplot(fig2)
 
             corr_dynamic = df[selected].corr(df["Chemical Oxygen Demand"])
-
-            # Determine strength for interpretation
             if abs(corr_dynamic) > 0.7:
-                emoji = "✅"
-                label = "Strong correlation"
+                emoji, label = "✅", "Strong correlation"
             elif abs(corr_dynamic) > 0.3:
-                emoji = "⚠️"
-                label = "Moderate correlation"
+                emoji, label = "⚠️", "Moderate correlation"
             else:
-                emoji = "❌"
-                label = "Weak or no correlation"
-
+                emoji, label = "❌", "Weak or no correlation"
             st.markdown(f"**Correlation between `{selected}` and COD:** `{corr_dynamic:.2f}` — {emoji} {label}")
 
-    # Other hypotheses
+    # Hypothesis 2 — ML Prediction
     with st.expander("📌 Hypothesis 2 — COD Can Be Predicted Using ML"):
         st.markdown("""
         **Hypothesis:** COD levels can be accurately predicted using operational and environmental features.
@@ -79,7 +73,6 @@ def page_cod_hypotheses_body():
             - **Tuned RMSE:** 73.60  
             - **Tuned R²:** 0.71 ✅  
             """)
-
             st.markdown("#### 🧮 Classification Results (Confusion Matrix)")
             st.markdown("""
             ```
@@ -88,7 +81,6 @@ def page_cod_hypotheses_body():
             | Low              | 54  |  0  | 31   |
             | Med              | 0   |  4  | 5    |
             | High             | 22  |  1  | 160  |
-
             ```
             - This shows the model's predictions across 3 COD classes
             """)
@@ -111,7 +103,7 @@ def page_cod_hypotheses_body():
 
         st.success("✅ Hypothesis supported. COD levels were predicted with good accuracy using Random Forest models.")
 
-
+    # Hypothesis 3 — Clustering
     with st.expander("📌 Hypothesis 3 — Operational Clustering"):
         st.markdown("""
         **Hypothesis:** There are distinct operational profiles in the dataset that correspond to specific COD behaviour clusters.
@@ -124,7 +116,6 @@ def page_cod_hypotheses_body():
         if st.checkbox("📉 Show cluster visualisation and interpretation"):
             df_cluster = pd.read_csv("outputs/datasets/cluster_data.csv")
 
-            # -- Cluster Scatterplot --
             fig, ax = plt.subplots(figsize=(8, 6))
             sns.scatterplot(
                 x="PCA1", y="PCA2", hue="Cluster",
@@ -136,13 +127,10 @@ def page_cod_hypotheses_body():
             ax.set_ylabel("PCA Component 2")
             st.pyplot(fig)
 
-            # -- Average COD per Cluster Table + Label --
             if "Chemical Oxygen Demand" in df_cluster.columns:
                 st.markdown("#### 📌 Average COD per Cluster:")
-
                 summary = (
-                    df_cluster
-                    .groupby("Cluster")["Chemical Oxygen Demand"]
+                    df_cluster.groupby("Cluster")["Chemical Oxygen Demand"]
                     .agg(["count", "mean"])
                     .rename(columns={"count": "Samples", "mean": "Avg COD (mg/L)"})
                     .round(2)
@@ -155,20 +143,16 @@ def page_cod_hypotheses_body():
                         return "Moderate COD"
                     else:
                         return "High COD"
-                
+
                 summary["COD Label"] = summary["Avg COD (mg/L)"].apply(label_cod)
                 st.dataframe(summary)
 
-                # -- Bar chart --
                 st.markdown("#### 📊 Avg COD by Cluster")
                 fig_bar, ax_bar = plt.subplots()
-                sns.barplot(
-                    x=summary.index,
-                    y=summary["Avg COD (mg/L)"],
-                    palette="Set2",
-                    ax=ax_bar
-                )
+                sns.barplot(x=summary.index, y=summary["Avg COD (mg/L)"], palette="Set2", ax=ax_bar)
                 ax_bar.set_xlabel("Cluster")
                 ax_bar.set_ylabel("Avg COD (mg/L)")
                 ax_bar.set_title("Average COD by Cluster")
                 st.pyplot(fig_bar)
+
+        st.success("✅ Hypothesis supported. Operational clusters highlight behavioural patterns related to COD, useful for monitoring and optimisation.")
