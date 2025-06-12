@@ -27,10 +27,13 @@ def page_cod_hypotheses_body():
             st.pyplot(fig)
 
             correlation = df["Average Temperature"].corr(df["Chemical Oxygen Demand"])
-            st.markdown(f"**Correlation:** `{correlation:.2f}` — ❌ Weak correlation")
+            st.markdown(f"""
+            - 📉 **Correlation coefficient:** `{correlation:.2f}`  
+            - ❌ **Conclusion:** Not supported. The correlation is weak, with no clear trend.
+            """)
 
         # Custom feature correlation section
-        st.markdown("### 📊 Try another feature vs COD")
+        st.markdown("##### 📊 Try another feature vs COD")
 
         if st.checkbox("🔍 Show custom feature comparison with COD"):
             options = [col for col in df.columns if col not in ["Chemical Oxygen Demand", "date"]]
