@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import joblib
 
 def page_cod_hypotheses_body():
     st.title("🧪 Project Hypotheses and Validation")
@@ -62,22 +63,112 @@ def page_cod_hypotheses_body():
             st.markdown(f"**Correlation between `{selected}` and COD:** `{corr_dynamic:.2f}` — {emoji} {label}")
 
     # Other hypotheses
-    with st.expander("📌 Hypothesis 2 — ML COD Prediction"):
+    with st.expander("📌 Hypothesis 2 — COD Can Be Predicted Using ML"):
         st.markdown("""
-        **Hypothesis:** COD can be accurately predicted using operational and environmental data.
+        **Hypothesis:** COD levels can be accurately predicted using operational and environmental features.
 
-        - 🔍 **Type:** Predictive hypothesis  
-        - 🧪 **Evaluation:** Trained Random Forest model on selected features  
-        - ✅ **Result:** Model achieved high R² and performance, confirming the hypothesis.
+        - 📊 **Evaluation:** Regression and classification models were trained  
+        - 🧠 **Model (Regression):** Random Forest Regressor  
+        - 🧠 **Model (Classification):** Random Forest Classifier
         """)
 
-    with st.expander("📌 Hypothesis 3 — Operational Clusters"):
-        st.markdown("""
-        **Hypothesis:** There are distinct operational profiles corresponding to COD levels.
+        if st.checkbox("🔍 Show model performance metrics"):
+            st.markdown("#### 🧮 Regression Results")
+            st.markdown("""
+            - **Tuned MAE:** 49.44  
+            - **Tuned RMSE:** 73.60  
+            - **Tuned R²:** 0.71 ✅  
+            """)
 
-        - 🔍 **Type:** Exploratory clustering  
-        - 🧪 **Evaluation:** Clustering on treatment features reveals operational groupings  
-        - ✅ **Result:** Supported — clusters align with COD patterns and may help detect anomalies.
+            st.markdown("#### 🧮 Classification Results (Confusion Matrix)")
+            st.markdown("""
+            ```
+            | True ↓ / Pred → | Low | Med | High |
+            |------------------|-----|-----|------|
+            | Low              | 54  |  0  | 31   |
+            | Med              | 0   |  4  | 5    |
+            | High             | 22  |  1  | 160  |
+
+            ```
+            - This shows the model's predictions across 3 COD classes
+            """)
+
+        if st.checkbox("📈 Show Feature Importance Plot"):
+            model = joblib.load("outputs/models/final_model.pkl")
+            features = model.feature_names_in_
+            importances = model.feature_importances_
+
+            imp_df = pd.DataFrame({
+                "Feature": features,
+                "Importance": importances
+            }).sort_values(by="Importance", ascending=True)
+
+            fig, ax = plt.subplots(figsize=(8, 6))
+            sns.barplot(x="Importance", y="Feature", data=imp_df, ax=ax)
+            ax.set_title("Feature Importance for COD Prediction")
+            ax.set_xlabel("Relative Feature Importance (Gini)")
+            st.pyplot(fig)
+
+        st.success("✅ Hypothesis supported. COD levels were predicted with good accuracy using Random Forest models.")
+
+
+    with st.expander("📌 Hypothesis 3 — Operational Clustering"):
+        st.markdown("""
+        **Hypothesis:** There are distinct operational profiles in the dataset that correspond to specific COD behaviour clusters.
+
+        - 🔍 **Type:** Exploratory hypothesis (unsupervised learning)  
+        - 🧪 **Evaluation:** Clustering applied to operational features (e.g., KMeans)  
+        - 📊 **Goal:** Identify patterns in treatment behaviour that influence COD
         """)
 
-    st.success("These hypotheses shaped the structure of the analysis and were evaluated using visualisation, machine learning, and statistical techniques.")
+        if st.checkbox("📉 Show cluster visualisation and interpretation"):
+            df_cluster = pd.read_csv("outputs/datasets/cluster_data.csv")
+
+            # -- Cluster Scatterplot --
+            fig, ax = plt.subplots(figsize=(8, 6))
+            sns.scatterplot(
+                x="PCA1", y="PCA2", hue="Cluster",
+                data=df_cluster, palette="Set2", s=100,
+                edgecolor="black", ax=ax
+            )
+            ax.set_title("Operational Clusters (PCA Projection, Color = Cluster)")
+            ax.set_xlabel("PCA Component 1")
+            ax.set_ylabel("PCA Component 2")
+            st.pyplot(fig)
+
+            # -- Average COD per Cluster Table + Label --
+            if "Chemical Oxygen Demand" in df_cluster.columns:
+                st.markdown("#### 📌 Average COD per Cluster:")
+
+                summary = (
+                    df_cluster
+                    .groupby("Cluster")["Chemical Oxygen Demand"]
+                    .agg(["count", "mean"])
+                    .rename(columns={"count": "Samples", "mean": "Avg COD (mg/L)"})
+                    .round(2)
+                )
+
+                def label_cod(value):
+                    if value < 600:
+                        return "Low COD"
+                    elif value < 900:
+                        return "Moderate COD"
+                    else:
+                        return "High COD"
+                
+                summary["COD Label"] = summary["Avg COD (mg/L)"].apply(label_cod)
+                st.dataframe(summary)
+
+                # -- Bar chart --
+                st.markdown("#### 📊 Avg COD by Cluster")
+                fig_bar, ax_bar = plt.subplots()
+                sns.barplot(
+                    x=summary.index,
+                    y=summary["Avg COD (mg/L)"],
+                    palette="Set2",
+                    ax=ax_bar
+                )
+                ax_bar.set_xlabel("Cluster")
+                ax_bar.set_ylabel("Avg COD (mg/L)")
+                ax_bar.set_title("Average COD by Cluster")
+                st.pyplot(fig_bar)
