@@ -15,7 +15,7 @@ def page_cod_analysis_body():
     df = pd.read_csv("outputs/datasets/collection/Data-Melbourns_F_fixed.csv", parse_dates=["date"])
     df["Month"] = df["date"].dt.strftime("%b")
     month_order = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     df["Month"] = pd.Categorical(df["Month"], categories=month_order, ordered=True)
 
     # Dropdown menu

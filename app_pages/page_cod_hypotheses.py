@@ -4,11 +4,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import joblib
 
-df = pd.read_csv("outputs/datasets/collection/cleaned_cod_data.csv")
-
 def page_cod_hypotheses_body():
     st.title("🧪 Project Hypotheses and Validation")
     st.markdown("This page outlines key project hypotheses, how they were tested, and whether they were supported by the data.")
+
+    df = pd.read_csv("outputs/datasets/collection/cleaned_cod_data.csv")
 
     # Hypothesis 1 — Temperature and Feature Correlations
     with st.expander("📌 Hypothesis 1 — Temperature and Feature Correlations with COD"):
