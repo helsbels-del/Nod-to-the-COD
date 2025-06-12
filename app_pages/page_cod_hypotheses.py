@@ -34,27 +34,7 @@ def page_cod_hypotheses_body():
             - ❌ **Conclusion:** Not supported. The correlation is weak, with no clear trend.
             """)
 
-        # Optional feature comparison
-        st.markdown("##### 📊 Try another feature vs COD")
-        if st.checkbox("🔍 Show custom feature comparison with COD"):
-            options = [col for col in df.columns if col not in ["Chemical Oxygen Demand", "date"]]
-            selected = st.selectbox("Choose a feature to compare with COD:", options)
-
-            fig2, ax2 = plt.subplots(figsize=(8, 6))
-            sns.scatterplot(x=df[selected], y=df["Chemical Oxygen Demand"], ax=ax2)
-            ax2.set_title(f"COD vs {selected}")
-            ax2.set_xlabel(selected)
-            ax2.set_ylabel("Chemical Oxygen Demand (mg/L)")
-            st.pyplot(fig2)
-
-            corr_dynamic = df[selected].corr(df["Chemical Oxygen Demand"])
-            if abs(corr_dynamic) > 0.7:
-                emoji, label = "✅", "Strong correlation"
-            elif abs(corr_dynamic) > 0.3:
-                emoji, label = "⚠️", "Moderate correlation"
-            else:
-                emoji, label = "❌", "Weak or no correlation"
-            st.markdown(f"**Correlation between `{selected}` and COD:** `{corr_dynamic:.2f}` — {emoji} {label}")
+       
 
     # Hypothesis 2 — ML Prediction
     with st.expander("📌 Hypothesis 2 — COD Can Be Predicted Using ML"):
