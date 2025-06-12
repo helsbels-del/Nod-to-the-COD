@@ -4,3 +4,4 @@ matplotlib==3.10.0
 scikit-learn==1.6.1
 joblib==1.5.1
 protobuf==3.20.3
+seaborn==0.13.2
