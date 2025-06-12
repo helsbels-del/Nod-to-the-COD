@@ -34,8 +34,6 @@ def page_cod_hypotheses_body():
             - ❌ **Conclusion:** Not supported. The correlation is weak, with no clear trend.
             """)
 
-       
-
     # Hypothesis 2 — ML Prediction
     with st.expander("📌 Hypothesis 2 — COD Can Be Predicted Using ML"):
         st.markdown("""
@@ -82,6 +80,14 @@ def page_cod_hypotheses_body():
             st.pyplot(fig)
 
         st.success("✅ Hypothesis supported. COD levels were predicted with good accuracy using Random Forest models.")
+
+    with st.expander("📊 MAE and RMSE Comparison – Baseline vs Tuned"):
+        st.image("outputs/figures/mae_rmse_comparison.png", caption="MAE and RMSE Comparison – Tuned Model")
+        st.markdown("""
+        This chart visually compares model performance before and after hyperparameter tuning.
+        Lower MAE and RMSE confirm that the tuning process significantly improved prediction accuracy.
+        """)
+
 
     # Hypothesis 3 — Clustering
     with st.expander("📌 Hypothesis 3 — Operational Clustering"):
