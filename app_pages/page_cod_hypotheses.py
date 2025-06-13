@@ -98,11 +98,9 @@ def page_cod_hypotheses_body():
 
         """)
             
-        if st.checkbox("📉 Show MAE, RMSE and R² Comparison Charts"):
-            st.markdown("#### 📊 Model Performance Comparisons")              
+        if st.checkbox("📉 Show MAE, RMSE and R² Comparison Charts"):              
             st.image("outputs/figures/mae_rmse_comparisona.png", caption="RMSE Comparison – Tuned vs Baseline")
             st.image("outputs/figures/r2_comparison.png", caption="R² Comparison – Tuned vs Baseline", use_container_width=True)
-
             st.markdown("""
             These charts compare the model performance before and after hyperparameter tuning.  
             ✅ Lower **MAE** and **RMSE**, and higher **R²** confirm that the tuned model performs better than the baseline.
