@@ -34,7 +34,7 @@ def page_cod_hypotheses_body():
             - ❌ **Conclusion:** Not supported. The correlation is weak, with no clear trend.
             """)
 
-    # Hypothesis 2 — ML Prediction
+    # Hypothesis 2 — ML Prediction 
     with st.expander("📌 Hypothesis 2 — COD Can Be Predicted Using ML"):
         st.markdown("""
         **Hypothesis:** COD levels can be accurately predicted using operational and environmental features.
@@ -81,12 +81,23 @@ def page_cod_hypotheses_body():
 
         st.success("✅ Hypothesis supported. COD levels were predicted with good accuracy using Random Forest models.")
 
-    with st.expander("📊 MAE and RMSE Comparison – Baseline vs Tuned"):
-        st.image("outputs/figures/mae_rmse_comparison.png", caption="MAE and RMSE Comparison – Tuned Model")
-        st.markdown("""
-        This chart visually compares model performance before and after hyperparameter tuning.
-        Lower MAE and RMSE confirm that the tuning process significantly improved prediction accuracy.
+        # 🔄 MAE + RMSE Comparison (put this OUTSIDE the expander)
+        if st.checkbox("📊 Show MAE and RMSE Comparison – Baseline vs Tuned"):
+            st.image("outputs/figures/mae_rmse_comparison.png", caption="MAE and RMSE Comparison – Tuned Model")
+            st.markdown("""
+            This chart visually compares model performance before and after hyperparameter tuning.  
+            Lower MAE and RMSE confirm that the tuning process significantly improved prediction accuracy.
+            #### 🔧 Tuning Details
+            Hyperparameter tuning was performed using `GridSearchCV` to optimise the Random Forest model.
+            The following parameters were tuned:
+            - `n_estimators`: number of trees in the forest
+            - `max_depth`: maximum depth of each tree
+            - `min_samples_split`: minimum number of samples required to split an internal node
+
+            The best model showed improved MAE, RMSE, and R² performance compared to the untuned baseline.
+
         """)
+
 
 
     # Hypothesis 3 — Clustering
