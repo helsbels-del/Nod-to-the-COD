@@ -30,7 +30,7 @@ The dataset includes 1,382 daily records across 19 features:
 - Month
 - Day
 
-These variables provide context for understanding and predicting Chemiacl Oxygen Demand (COD) levels.
+These variables provide context for understanding and predicting Chemical Oxygen Demand (COD) levels.
 
 ## Business Requirements
 
@@ -50,7 +50,7 @@ Higher temperatures are associated with lower COD levels due to increased microb
 
 - Type: Correlation hypothesis (testable using exploratory data analysis and regression)
 - How to evaluate: Correlation heatmap, scatter plots, linear regression, p-value analysis
-- Business Relevance: Helps operators understand seasonal variation and adapt treatmetn scedules accordingly.
+- Business Relevance: Helps operators understand seasonal variation and adapt treatment scedules accordingly.
 
 ### Hypothesis 2 (ML-Driven)
 
@@ -98,7 +98,7 @@ MAE (Mean Absolute Error) below 15mg/L on the test set
 
 #### Model Failure Criteria
 
-- If COD readings deviate by more than 50% fronm the predicted values in more than 30% of operational days over a 3 month period of use.
+- If COD readings deviate by more than 50% from the predicted values in more than 30% of operational days over a 3 month period of use.
 - R2 score consistently below 0.5 during validationa nd real-world monitoring.
 
 ### Model Output
@@ -139,10 +139,10 @@ The target is categorical, with 3 classes:
 
 This is a supervised, multi-class, single-label classification task.
 
-Ideal Outcome - Operators can be alerted to high risk COD levels in real time to help improve decsion making and staying in compliance.
+Ideal Outcome - Operators can be alerted to high risk COD levels in real time to help improve decision making and staying in compliance.
 
 Feature importance for classification (eg SHAP values or feature weights).
-Jusitfy how risk thresholds were chosen (eg. domain knowledge or distribution anlysis).
+Justify how risk thresholds were chosen (eg. domain knowledge or distribution analysis).
 
 #### Model Success Criteria
 
@@ -222,7 +222,7 @@ Content to include:
 - Brief Description of the wastewater treatmetn context.
 - Dataset overview (number of rows, key features)
 - Summary of Business Requirements
-  - Undestand patterns influencing COD levels.
+  - Understand patterns influencing COD levels.
   - Predict COD levels for smarter dosing predictions
 
 Optional Visual elements:
