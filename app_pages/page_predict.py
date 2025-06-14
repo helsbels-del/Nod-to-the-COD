@@ -2,10 +2,12 @@ import streamlit as st
 import pandas as pd
 import joblib
 
+
 def page_predict_body():
     st.title("🔮 COD Prediction Tool")
 
-    st.markdown("Enter treatment condition values below to estimate Chemical Oxygen Demand (COD) levels:")
+    st.markdown("Enter treatment condition values below to estimate Chemical"
+                " Oxygen Demand (COD) levels:")
 
     # Load model
     model = joblib.load("outputs/models/final_model.pkl")
@@ -33,13 +35,16 @@ def page_predict_body():
         prediction = model.predict(input_df)[0]
         st.success(f"Estimated COD: **{prediction:.2f} mg/L**")
 
-        # Interpret COD level
+    # Interpret COD level
         if prediction < 500:
-            st.success("✅ COD is low — good water quality. Treatment conditions appear well-optimised.")
+            st.success("✅ COD is low — good water quality."
+                       " Treatment conditions appear well-optimised.")
         elif 500 <= prediction <= 1000:
-            st.warning("⚠️ COD is moderate — within acceptable range, but monitor regularly.")
+            st.warning("⚠️ COD is moderate — within acceptable range,"
+                       " but monitor regularly.")
         else:
-            st.error("🚨 COD is high — consider reviewing treatment inputs or operational conditions.")
+            st.error("🚨 COD is high — consider reviewing treatment inputs or"
+                     " operational conditions.")
 
         # Context box
         st.info("""
@@ -48,5 +53,3 @@ def page_predict_body():
         - Early warning signs before discharge violations
         - Opportunities to adjust dosing or maintenance strategies
         """)
-
-

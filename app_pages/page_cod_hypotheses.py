@@ -4,52 +4,64 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import joblib
 
+
 def page_cod_hypotheses_body():
     st.title("🧪 Project Hypotheses and Validation")
-    st.markdown("This page outlines key project hypotheses, how they were tested, and whether they were supported by the data.")
+    st.markdown("This page outlines key project hypotheses,"
+                "how they were tested, and whether they were supported"
+                " by the data.")
 
     df = pd.read_csv("outputs/datasets/collection/cleaned_cod_data.csv")
 
     # Hypothesis 1 — Temperature and Feature Correlations
-    with st.expander("📌 Hypothesis 1 — Temperature and Feature Correlations with COD"):
+    with st.expander("📌 Hypothesis 1 — Temperature and Feature Correlations"
+                     " with COD"):
         st.markdown("""
-        **Hypothesis:** Higher temperatures are associated with lower COD levels due to increased microbial activity.
+        **Hypothesis:** Higher temperatures are associated with lower
+                    COD levels due to increased microbial activity.
 
         - 🔍 **Evaluation:** Scatterplot and correlation analysis
         """)
 
         # COD vs Temperature
         if st.checkbox("📈 Show plot and correlation for COD vs Temperature"):
-            df = pd.read_csv("outputs/datasets/collection/Data-Melbourns_F_fixed.csv", parse_dates=["date"])
+            df = pd.read_csv(
+                "outputs/datasets/collection/Data-Melbourns_F_fixed.csv",
+                parse_dates=["date"])
             fig, ax = plt.subplots(figsize=(8, 6))
-            sns.scatterplot(x="Average Temperature", y="Chemical Oxygen Demand", data=df, ax=ax)
+            sns.scatterplot(
+                x="Average Temperature", y="Chemical Oxygen Demand", data=df,
+                  ax=ax)
             ax.set_title("COD vs Average Temperature")
             ax.set_xlabel("Average Temperature (°C)")
             ax.set_ylabel("Chemical Oxygen Demand (mg/L)")
             st.pyplot(fig)
 
-            correlation = df["Average Temperature"].corr(df["Chemical Oxygen Demand"])
+            correlation = df["Average Temperature"].corr(df[
+                "Chemical Oxygen Demand"])
             st.markdown(f"""
-            - 📉 **Correlation coefficient:** `{correlation:.2f}`  
-            - ❌ **Conclusion:** Not supported. The correlation is weak, with no clear trend.
+            - 📉 **Correlation coefficient:** `{correlation:.2f}`
+            - ❌ **Conclusion:** Not supported. The correlation is weak,
+              with no clear trend.
             """)
+        # Hypothesis 2 — ML Prediction
+        with st.expander("📌 Hypothesis 2 — COD Can Be Predicted Using ML"):
+            st.markdown("""
+        **Hypothesis:**
+        COD levels can be accurately predicted using operational and
+                        environmental features.
 
-    # Hypothesis 2 — ML Prediction 
-    with st.expander("📌 Hypothesis 2 — COD Can Be Predicted Using ML"):
-        st.markdown("""
-        **Hypothesis:** COD levels can be accurately predicted using operational and environmental features.
-
-        - 📊 **Evaluation:** Regression and classification models were trained  
-        - 🧠 **Model (Regression):** Random Forest Regressor  
+        - 📊 **Evaluation:** Regression and classification models were trained
+        - 🧠 **Model (Regression):** Random Forest Regressor
         - 🧠 **Model (Classification):** Random Forest Classifier
         """)
 
         if st.checkbox("🔍 Show model performance metrics"):
             st.markdown("#### 🧮 Regression Results")
             st.markdown("""
-            - **Tuned MAE:** 49.44  
-            - **Tuned RMSE:** 73.60  
-            - **Tuned R²:** 0.71 ✅  
+            - **Tuned MAE:** 49.44
+            - **Tuned RMSE:** 73.60
+            - **Tuned R²:** 0.71 ✅
             """)
             st.markdown("#### 🧮 Classification Results (Confusion Matrix)")
             st.markdown("""
@@ -79,36 +91,45 @@ def page_cod_hypotheses_body():
             ax.set_xlabel("Relative Feature Importance (Gini)")
             st.pyplot(fig)
 
-        st.success("✅ Hypothesis supported. COD levels were predicted with good accuracy using Random Forest models.")
+        st.success("✅ Hypothesis supported. COD levels were predicted with"
+                   " good accuracy using Random Forest models.")
 
         # 🔄 MAE + RMSE + R² Comparison
-        if st.checkbox("📉 Show MAE, RMSE and R² Comparison Charts"):              
-            st.image("outputs/figures/mae_rmse_comparison.png", caption="RMSE Comparison – Tuned vs Baseline")
-            st.image("outputs/figures/r2_comparison.png", caption="R² Comparison – Tuned vs Baseline", use_container_width=True)
+        if st.checkbox("📉 Show MAE, RMSE and R² Comparison Charts"):
+            st.image("outputs/figures/mae_rmse_comparison.png",
+                     caption="RMSE Comparison – Tuned vs Baseline")
+            st.image("outputs/figures/r2_comparison.png",
+                     caption="R² Comparison – Tuned vs Baseline",
+                     use_container_width=True)
             st.markdown("""
-            These charts compare the model performance before and after hyperparameter tuning.               
-            ✅Lower MAE and RMSE confirm that the tuning process significantly improved prediction accuracy.
+            These charts compare the model performance before and after
+                         hyperparameter tuning.
+            ✅Lower MAE and RMSE confirm that the tuning process significantly
+                         improved prediction accuracy.
             #### 🔧 Tuning Details
-            Hyperparameter tuning was performed using `GridSearchCV` to optimise the Random Forest model.
+            Hyperparameter tuning was performed using `GridSearchCV` to
+                        optimise the Random Forest model.
             The following parameters were tuned:
             - `n_estimators`: number of trees in the forest
             - `max_depth`: maximum depth of each tree
-            - `min_samples_split`: minimum number of samples required to split an internal node
+            - `min_samples_split`: minimum number of samples required to split
+                        an internal node
 
-            The best model showed improved MAE, RMSE, and R² performance compared to the untuned baseline.             
+            The best model showed improved MAE, RMSE, and R² performance
+                        compared to the untuned baseline.
             """)
-
-
-
 
     # Hypothesis 3 — Clustering
     with st.expander("📌 Hypothesis 3 — Operational Clustering"):
         st.markdown("""
-        **Hypothesis:** There are distinct operational profiles in the dataset that correspond to specific COD behaviour clusters.
+        **Hypothesis:** There are distinct operational profiles in the dataset
+                     that correspond to specific COD behaviour clusters.
 
-        - 🔍 **Type:** Exploratory hypothesis (unsupervised learning)  
-        - 🧪 **Evaluation:** Clustering applied to operational features (e.g., KMeans)  
-        - 📊 **Goal:** Identify patterns in treatment behaviour that influence COD
+        - 🔍 **Type:** Exploratory hypothesis (unsupervised learning)
+        - 🧪 **Evaluation:** Clustering applied to operational features
+                     (e.g., KMeans)
+        - 📊 **Goal:** Identify patterns in treatment behaviour that
+                     influence COD
         """)
 
         if st.checkbox("📉 Show cluster visualisation and interpretation"):
@@ -120,7 +141,8 @@ def page_cod_hypotheses_body():
                 data=df_cluster, palette="Set2", s=100,
                 edgecolor="black", ax=ax
             )
-            ax.set_title("Operational Clusters (PCA Projection, Color = Cluster)")
+            ax.set_title("Operational Clusters ("
+                         "PCA Projection, Color = Cluster)")
             ax.set_xlabel("PCA Component 1")
             ax.set_ylabel("PCA Component 2")
             st.pyplot(fig)
@@ -130,7 +152,8 @@ def page_cod_hypotheses_body():
                 summary = (
                     df_cluster.groupby("Cluster")["Chemical Oxygen Demand"]
                     .agg(["count", "mean"])
-                    .rename(columns={"count": "Samples", "mean": "Avg COD (mg/L)"})
+                    .rename(columns={"count": "Samples",
+                                     "mean": "Avg COD (mg/L)"})
                     .round(2)
                 )
 
@@ -142,15 +165,19 @@ def page_cod_hypotheses_body():
                     else:
                         return "High COD"
 
-                summary["COD Label"] = summary["Avg COD (mg/L)"].apply(label_cod)
+                summary["COD Label"] = summary[
+                    "Avg COD (mg/L)"].apply(label_cod)
                 st.dataframe(summary)
 
                 st.markdown("#### 📊 Avg COD by Cluster")
                 fig_bar, ax_bar = plt.subplots()
-                sns.barplot(x=summary.index, y=summary["Avg COD (mg/L)"], palette="Set2", ax=ax_bar)
+                sns.barplot(x=summary.index, y=summary["Avg COD (mg/L)"],
+                            palette="Set2", ax=ax_bar)
                 ax_bar.set_xlabel("Cluster")
                 ax_bar.set_ylabel("Avg COD (mg/L)")
                 ax_bar.set_title("Average COD by Cluster")
                 st.pyplot(fig_bar)
 
-        st.success("✅ Hypothesis supported. Operational clusters highlight behavioural patterns related to COD, useful for monitoring and optimisation.")
+        st.success("✅ Hypothesis supported. Operational clusters highlight"
+                   " behavioural patterns related to COD, "
+                   "useful for monitoring and optimisation.")

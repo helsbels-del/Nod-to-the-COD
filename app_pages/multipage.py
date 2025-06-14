@@ -9,5 +9,6 @@ class MultiPage:
     def run(self):
         import streamlit as st
         st.sidebar.title(self.app_name)
-        page = st.sidebar.radio("Navigation", self.pages, format_func=lambda x: x['title'])
+        page = st.sidebar.radio("Navigation", self.pages,
+                format_func=lambda x: x['title'])
         page['function']()
