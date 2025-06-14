@@ -38,7 +38,7 @@ The project includes:
 The dataset was collected from a full-scale wastewater treatment plant and includes:
 
 - Temporal data (month, season)  
-- Operational data (e.g., sludge retention time, flow rates)  
+- Operational data (e.g., flow rates)  
 - Environmental variables (e.g., temperature, rainfall)  
 - Chemical measurements (COD, TOC, NH₄, etc)  
 
