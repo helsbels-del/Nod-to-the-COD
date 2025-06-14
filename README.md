@@ -1,309 +1,248 @@
 # NOD to the COD
 
+## Summary
+
+**Nod to the COD** is a machine learning project designed to help wastewater treatment plants predict and manage Chemical Oxygen Demand (COD) levels using environmental and operational data. By combining conventional analysis with supervised and unsupervised ML, the app empowers operators to optimise processes, reduce costs, and stay compliant.
+
+## Table of Contents
+
+- [Project Overview](#project-overview)
+- [Dataset Content](#dataset-content)
+- [Business Requirements](#business-requirements)
+- [Hypotheses and Validation Strategies](#hypotheses-and-validation-strategies)
+- [ML Business Case](#ml-business-case)
+- [Dashboard Design](#dashboard-design)
+- [Epics and User Stories](#epics-and-user-stories)
+- [Unfixed Bugs](#unfixed-bugs)
+- [Deployment](#deployment)
+- [Libraries Used](#libraries-used)
+- [Credits](#credits)
+
+---
+
 ## Project Overview
 
-Waste water quality monitoring is an important public health concern. One of the main parameters monitored by industries using water treatment plants is the amount of COD (chemical oxygen demand). This measures the amount of oxygen required to break down organic matter in the water. High COD levels can indicate an inefficient treatment in the treatment process.
-Nod to the COD is a data-driven project designed to support wastewater treatment plants in forecasting COD levels using machine learning and data analysis techniques. The goal being to enable proactive decision making by predicting COD levels and identifying the associated factors.
+This data science project investigates trends and predictions of Chemical Oxygen Demand (COD) in wastewater treatment using machine learning. The goal is to support sustainable water management through actionable insights and predictive tools.
+
+The project includes:
+
+- Exploratory Data Analysis (EDA) on COD trends and influencing factors  
+- Hypothesis testing around operational and environmental drivers of COD  
+- Regression and classification models for COD prediction  
+- A multi-page interactive dashboard for exploration and prediction  
+
+---
 
 ## Dataset Content
 
-Nod to the COD uses a dataset obtained from Kaggle containing operational and environmental data from a full-scale wastewater treatment plant.
-The dataset includes 1,382 daily records across 19 features:
+The dataset was collected from a full-scale wastewater treatment plant and includes:
 
-- Average outflow
-- Average inflow
-- Energy Consumption
-- Ammonia
-- BOD
-- COD
-- TN
-- Average Temp
-- Max Temp
-- Min Temp
-- Atmospheric pressure
-- Average humidity
-- Total rainfall
-- Average visibility
-- Average wind speed
-- Max wind speed
-- Year
-- Month
-- Day
+- Temporal data (month, season)  
+- Operational data (e.g., sludge retention time, flow rates)  
+- Environmental variables (e.g., temperature, rainfall)  
+- Chemical measurements (COD, TOC, NH₄, etc)  
 
-These variables provide context for understanding and predicting Chemical Oxygen Demand (COD) levels.
+The dataset was cleaned and preprocessed to support time-series analysis, machine learning, and interactive dashboard display.
+
+---
 
 ## Business Requirements
 
-### Business Requirement 1 - Understanding COD trends
+1. **Understand trends in COD levels over time**  
+   - Identify seasonal patterns and operational influences.  
 
-Business stakeholders need insights into how COD levels fluctuate across seasons and treatment conditions to help support process improvements and regulatory reporting.
+2. **Predict future COD levels using ML models**  
+   - Support proactive treatment decisions.  
 
-### Business Requirement 2 - Predict COD for operational decison making
+3. **Test specific hypotheses related to operational/environmental drivers**  
+   - Validate assumptions with data-backed insights.  
 
-The plant wants a predictive tool to estimate the COD levels in advance to help with chemical dosing to help reduce operational costs without comprimising the effluent quality.
+---
 
-## Hypotheses and Validation Strastegies
+## Hypotheses and Validation Strategies
 
-### Hypothesis 1 (Conventional analysis)
+### Hypothesis 1 – Conventional Analysis
 
-Higher temperatures are associated with lower COD levels due to increased microbial activity.
+**Higher temperatures are associated with lower COD levels due to increased microbial activity.**
 
-- Type: Correlation hypothesis (testable using exploratory data analysis and regression)
-- How to evaluate: Correlation heatmap, scatter plots, linear regression, p-value analysis
-- Business Relevance: Helps operators understand seasonal variation and adapt treatment scedules accordingly.
+- **Type:** Correlation hypothesis  
+- **Validation:** Correlation heatmap, scatter plots, linear regression, p-value  
+- **Business Impact:** Understanding seasonal variation supports adaptive treatment planning  
 
-### Hypothesis 2 (ML-Driven)
+### Hypothesis 2 – ML-Driven
 
-COD can be accurately predicted using operational and environmental data.
+**COD can be accurately predicted using operational and environmental data.**
 
-- Type: Predictive hypothesis (requires supervised ML)
-- How to Evaluate: Train/test ML models, measure performance metrics such as R2.
-- Business Relevance: Enables proactive chemical dosing and treatment adjustments to maintain regulatory compliance.
+- **Type:** Predictive (supervised ML)  
+- **Validation:** Train/test ML models, evaluate using R², MAE, RMSE  
+- **Business Impact:** Enables proactive chemical dosing and better compliance  
 
-### Hypothesis 3 (Unsupervised Learnign/Clustering)
+### Hypothesis 3 – Unsupervised Learning  
 
-There are distinct operational profiles or patterns in plant performance that correspond to specific COD behaviour clusters.
+**Distinct operational profiles exist that correspond to specific COD behaviour.**  
 
-- Type: Exploratory hypothesis (requires unsupervised learning)
-- How to Evaluate: Apply clustering (eg KMens, DBSCAN), validate using silhouette score or Davies-Bouldin Index, analyze cluster characterictics.
-- Business Relevance: Allows identification of typical vs atypical plant behaviour abd supports anomaly detection and process optimisation.
+- **Type:** Exploratory (unsupervised learning)  
+- **Validation:** Clustering (e.g., KMeans), silhouette score, Davies-Bouldin Index  
+- **Business Impact:** Identifies atypical plant behaviour for anomaly detection and process optimisation  
 
-## The rationale to map the business requirements to the Data Visualizations and ML tasks
+---
 
-Business requirement 1 - Understand COD trends
-Visualisation - Time series, boxplots, heatmaps
-Rationale - Identify patterns and feature relationships
+## Mapping Business Requirements to ML and Visualisation
 
-Business requirement 2 - Predict COD levels
-ML-Task - Regression model (Random Forest, XGBoost)
-Rationale - Support proactive chemical dosing decisions.
+| Business Requirement | Visualisation or ML Task              | Rationale                                           |
+|----------------------|----------------------------------------|-----------------------------------------------------|
+| COD trends           | Time series, boxplots, heatmaps       | Understand seasonal and operational influences      |
+| Predict COD levels   | Regression/classification models      | Enable proactive and optimised decision-making      |
+| Test hypotheses      | Correlation plots, clustering, ML     | Support with data-driven validation and insight     |
+
+---
 
 ## ML Business Case
 
-### Predict Chemical Oxygen Demand (COD)
+### Predicting Chemical Oxygen Demand (Regression)
 
-#### Regression Model
+**Objective:** Predict COD levels based on operational and environmental data.  
+**Model:** Random Forest Regressor  
+**Target Variable:** COD (continuous, mg/L)  
+**Success Criteria:**  
 
-We want a machine learning model to predict COD levels in wastewater using historical operational and environmental data from a full-scale wastewater treatment plant.
-COD is the target variable which is a continuos numerical variable, so I have considered a regression model.
-The model output is a predicted COD value (mg/L) based on real-time plant measurments of other water quality parameters.
+- R² ≥ 0.75  
+- MAE ≤ 15 mg/L  
 
-This will allow plant operators to have an advanced insight into potential high levels of COD, providing time for intervention to maintain efficeny and importantly, regulatory compliance, to avoid any fines.
+**Failure Criteria:**
 
-#### Model Success Metrics
+- R² < 0.5 consistently  
+- >30% of days deviate by >50% from predicted  
 
-At least 0.75R2 score on both train and test sets
+**Output:**
 
-MAE (Mean Absolute Error) below 15mg/L on the test set
+- Numeric COD prediction  
+- Displayed in a dashboard alongside observed values  
 
-#### Model Failure Criteria
+**Current Workflow:** 
 
-- If COD readings deviate by more than 50% from the predicted values in more than 30% of operational days over a 3 month period of use.
-- R2 score consistently below 0.5 during validationa nd real-world monitoring.
+Operators rely on historical knowledge. This is reactive and may lead to overdosing or non-compliance.
 
-### Model Output
+---
 
-The model outputs a single numeric value representing hte predicted COD level (in mg/L). This can be:
+### Classifying COD Risk Level (Classification)
 
-- Integrated into a real-time dashboard that shows both predicted and onserved COD levels.
-- Used in conjunction with operational rules to flag potential out of acceptable range values.
-  
-### Data Collection and Prediction
+**Objective:** Classify COD into risk categories  
+**Model:** Random Forest Classifier  
+**Classes:**
 
-- Input Data: Readings from a data collection sensor (SCADA).
-- Prediction Frequency: Daily
-- Deployment - Model can be deployed via API or embedded in an internal monitoring dashboard.
+- Low (<50 mg/L)  
+- Medium (50–100 mg/L)  
+- High (>100 mg/L)  
 
-### Current Approach
+**Success Criteria:**
 
-Operators are currently relying on historical data and chemical dosing experiencs with no formal predictive model.
-This process is reactive rather than proactive and can lead to inefficient dosing and or a breach of compliance.
+- Recall ≥ 85% for “High” COD class  
+- Overall accuracy ≥ 75%  
 
-### Training Data
+**Failure Criteria:**
 
-- Dataset includes months of operational data from a wastewater plant.
-- 19 features
-- Target variable - COD
-- All features are numeraical data. Some data has been dropped as it is irrelevant and the time data was transformed to timestamp data.
+- Recall < 75% for “High” COD after 3 months  
+- Accuracy < 60% over 30 days  
 
-## Predict COD Risk Level
+**Output:**
 
-### Classification Model
+- Class label + probability  
+- Dashboard alert system  
 
-We want an ML model to classify COD readings into risk categories to help operators understand if any intervention is required.
-The target is categorical, with 3 classes:
+---
 
-- Low (<50 mg/l)
-- Medium (50-100 mg/L)
-- High (>100 mg/L)
+### Clustering Operational Conditions (Unsupervised)
 
-This is a supervised, multi-class, single-label classification task.
+**Objective:** Identify common operating patterns influencing COD  
+**Model:** KMeans or DBSCAN  
+**Success Criteria:**
 
-Ideal Outcome - Operators can be alerted to high risk COD levels in real time to help improve decision making and staying in compliance.
+- Silhouette score ≥ 0.4  
+- ≤ 10 clusters for interpretability  
 
-Feature importance for classification (eg SHAP values or feature weights).
-Justify how risk thresholds were chosen (eg. domain knowledge or distribution analysis).
+**Failure Criteria:**
 
-#### Model Success Criteria
+- >15 indistinct clusters  
+- Silhouette score < 0.25  
 
-- Recall >= 85% for High COD class on test data to avoid missing any critical alerts.
-- Overall acuracy >= 75%
+**Output:**
 
-#### Model Failure Criteria
+- Cluster label  
+- Visualised via radar plots or cluster summaries  
 
-- If more than 25% of high COD events are missed (low recall), after 3 months of use.
-- If accuracy drops below 60% in live testing over a 30 day period, leading to increased costs and overdosing.
-
-### Model Output
-
-A predicted class level: 'Low', 'Medium', or 'High', and the probability for each class.
-Used in:
-
-- Real-time dashboard with traffic lights alerts
-- Automated messages to suggest dosing/flow adjustments when high COD levels are predicted.
-
-### Current Approach
-
-No automated risk categorisation currently exists. Risk decisions are made after lab results or delayed sensor results interpretation.
-
-### Training Data
-
-- Same as regression however the target COD is discretised as using thresholds.
-- Features: Pre-processed environmental and operational sensor data.
-
-## Cluster Operational Conditions
-
-### Clustering Model
-
-We want to use unsupervised learning to group similar plant operating conditions that leaad to different COD behaviours.
-This model will help to understand plant states and could lead to better process control.
-
-|Ideal Outcome - Operators will gain insight into distinct operating regimes and can understand when intervention is required, depending on the conditions.
-Cluster profiles can guide different operational responses and dosing strategies.
-
-#### Model Success Metrics
-
-- Silhouette score >= 0.4
-- Maximum 10 clusters for interpretability
-
-#### Model Failure Criteria
-
-- If the model produces >15 clusters, whcih are hard to explain
-- Silhouette score <0.25
-
-### Model Output
-
-- Each record is assigned a Cluster label (e.g 0, 1, 2...)
-- Output column: Operating_Cluster
-- Profiles are visualised with:
-  - Radar plots / parallel coordinates
-  - Cluster mean values for COD, flow, ammonia, temp, etc.
-
-### Current Approach
-
-There is no clear understanding of recurring conditions that lead to COD instability.
-Clustering will give data-driven operating profiles
-
-### Training Data
-
-- Features: All scaled numeric sensor readings
-- COD can be included for profiling (but not used as input)
+---
 
 ## Dashboard Design
 
-### Dashboard Layout Plan
+### 1. Project Summary Page
 
-#### 1. Project Summary Page
+- Project intro  
+- Dataset overview  
+- Key metrics  
 
-Goal : To introoduce the project, dataset, and the business requirements from the client
+### 2. COD Trends (EDA)
 
-Content to include:
+- COD by time, rainfall, season  
+- Feature relationships  
 
-- Brief Description of the wastewater treatmetn context.
-- Dataset overview (number of rows, key features)
-- Summary of Business Requirements
-  - Understand patterns influencing COD levels.
-  - Predict COD levels for smarter dosing predictions
+### 3. Hypothesis Validation
 
-Optional Visual elements:
+- One expander per hypothesis  
+- Plots + markdown explanations  
 
-- Summary cards; e.g COD avg: xx mg?L, Total days:  1382, etc.
-- Pie Chart or bar chart of feature types (eg. environmental vs operational)
+### 4. ML Performance
 
-#### 2. Data Analytics and ML Pages
-
-Goal: To show how I have addressed each of the business requirements using analysis and ML.
-
-A. Conventional Data Analysis
-
-- Correltation heatmap showing relationship between features and COD.
-- Line chart of COD over time.
-- Boxplots of COD by month or season
-- Rainfall vs COD scatter plot.
-
-B. Machine Learning
-
-- Feature importance bar plot (eg. from Random Forest)
-- Actual vs Predicted COD plot.
-- Summary table of key metrics: MAE, RMSE, R2.
-  
-#### 3. Hypothesis Validation Page
-
-Goal: To clearly communicate the hypothesis and how they were tested.
-
-Structure:
-
-- State Hypotheses:
-  - COD is influenced by seasonla factors.
-  - COD can be predicted using operational and environmental features.
-- Visualisations used to test each (refer to analysis inssction 2)
-- Summarise findings:
-  - "We observed strong correlation between COD and X, supporting Hypothesis 1."
-  - "The model achieved R2 of X, supporting Hypothesis 2."
-
-#### 4. Technical ML Pipeline Page
-
-Goal: To showcase the technical implementation, especially if you deployed an ML model.
-
-Include:
-
-- Diagram of the ML pipeline (eg. Data Cleaning + feature Selection + Scaling + Model training + Evaluation)
-- Description of each pipeline step:
-  - How you handled missing data, encoded time etc
-  - Which models you used and why
-  - Hyperparameter tunig approach
-- Model performance metrics with charts and tables
-- Deployment notes: how and where the model could be used.
-
-Optional bonus: Show a simplified flowchart or Sankey diagram of the pipeline.
-
-# EPICS and User Stories
-
-### Epic 1: Data Preparation
-
-- User Story 1.1: As a data scientist, I want to clean and format the sataset so I can analyse any trends and build models.
-- User Story 1.2: As a data scientist, I want to engineer a date feature to analyse seasonal patterns.
-
-### Epic 2: Data Analysis
-
-- User Story 2.1: As a stakeholder, I want to see what environmental and operational variables influence COD so I can understand drivers of poor water quality.
-  
-### Epic 3: Machine Learning
-
-- User Story 3.1: As a data scientist, i want to train regression models to predict COD based on past data.
-- User Story 3.2: As a stakeholder, I want to evaluate model performance so that I can trust the predictions.
-
-### Epic 4: Visualisation and Reporting
-
-- Use Story 4.1: As as takeholder, I want a dashboard to explore COD trends and model predictions interactively.
-
-
-
+- Regression/classification results  
+- Feature importances  
+- Pre/post tuning comparison plots  
 
 ## Unfixed Bugs
-* You will need to mention unfixed bugs and why they were not fixed. This section should include shortcomings of the frameworks or technologies used. Although time can be a significant variable to consider, paucity of time and difficulty understanding implementation is not a valid reason to leave bugs unfixed.
+
+- None at the time of writing.  
+- In future, highlight known issues and limitations.  
 
 ## Deployment
+
+### Platform: Heroku
+
+To deploy:
+
+1. Create app in Heroku  
+2. Connect to GitHub  
+3. Push main branch  
+4. Open deployed link  
+
+Use `.slugignore` to exclude large files.
+
+## Libraries Used
+
+Key libraries:
+
+- `pandas` – data manipulation  
+- `matplotlib`, `seaborn` – visualisation  
+- `scikit-learn` – ML models  
+- `joblib` – model saving  
+- `streamlit` – dashboard  
+
+## Credits
+
+### Content
+
+- Wikipedia (background info)  
+- Tutorials from YouTube, blogs (model training)  
+
+### Media
+
+- Icons: Font Awesome  
+- Images: Unsplash / open-source sources  
+
+---
+
+## Acknowledgements
+
+Thanks to mentors, peers, and the Code Institute community for guidance and support.
+
 ### Heroku
 
 * The App live link is: https://YOUR_APP_NAME.herokuapp.com/ 
@@ -317,29 +256,22 @@ Optional bonus: Show a simplified flowchart or Sankey diagram of the pipeline.
 5. The deployment process should happen smoothly if all deployment files are fully functional. Click now the button Open App on the top of the page to access your App.
 6. If the slug size is too large then add large files not required for the app to the .slugignore file.
 
-
 ## Main Data Analysis and Machine Learning Libraries
+
 * Here you should list the libraries you used in the project and provide an example(s) of how you used these libraries.
 
-
-## Credits 
+## Credits
 
 * In this section, you need to reference where you got your content, media and extra help from. It is common practice to use code from other repositories and tutorials, however, it is important to be very specific about these sources to avoid plagiarism. 
 * You can break the credits section up into Content and Media, depending on what you have included in your project. 
 
 ### Content 
 
-- The text for the Home page was taken from Wikipedia Article A
-- Instructions on how to implement form validation on the Sign-Up page were taken from [Specific YouTube Tutorial](https://www.youtube.com/)
-- The icons in the footer were taken from [Font Awesome](https://fontawesome.com/)
-
 ### Media
 
 - The photos used on the home and sign-up page are from This Open-Source site
 - The images used for the gallery page were taken from this other open-source site
 
-
-
 ## Acknowledgements (optional)
-* Thank the people who provided support through this project.
 
+* Thank the people who provided support through this project.
