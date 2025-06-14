@@ -81,12 +81,13 @@ def page_cod_hypotheses_body():
 
         st.success("✅ Hypothesis supported. COD levels were predicted with good accuracy using Random Forest models.")
 
-        # 🔄 MAE + RMSE Comparison (put this OUTSIDE the expander)
-        if st.checkbox("📊 Show MAE and RMSE Comparison – Baseline vs Tuned"):
-            st.image("outputs/figures/mae_rmse_comparison.png", caption="MAE and RMSE Comparison – Tuned Model")
+        # 🔄 MAE + RMSE + R² Comparison
+        if st.checkbox("📉 Show MAE, RMSE and R² Comparison Charts"):              
+            st.image("outputs/figures/mae_rmse_comparison.png", caption="RMSE Comparison – Tuned vs Baseline")
+            st.image("outputs/figures/r2_comparison.png", caption="R² Comparison – Tuned vs Baseline", use_container_width=True)
             st.markdown("""
-            This chart visually compares model performance before and after hyperparameter tuning.  
-            Lower MAE and RMSE confirm that the tuning process significantly improved prediction accuracy.
+            These charts compare the model performance before and after hyperparameter tuning.               
+            ✅Lower MAE and RMSE confirm that the tuning process significantly improved prediction accuracy.
             #### 🔧 Tuning Details
             Hyperparameter tuning was performed using `GridSearchCV` to optimise the Random Forest model.
             The following parameters were tuned:
@@ -94,16 +95,7 @@ def page_cod_hypotheses_body():
             - `max_depth`: maximum depth of each tree
             - `min_samples_split`: minimum number of samples required to split an internal node
 
-            The best model showed improved MAE, RMSE, and R² performance compared to the untuned baseline.
-
-        """)
-            
-        if st.checkbox("📉 Show MAE, RMSE and R² Comparison Charts"):              
-            st.image("outputs/figures/mae_rmse_comparison.png", caption="RMSE Comparison – Tuned vs Baseline")
-            st.image("outputs/figures/r2_comparison.png", caption="R² Comparison – Tuned vs Baseline", use_container_width=True)
-            st.markdown("""
-            These charts compare the model performance before and after hyperparameter tuning.  
-            ✅ Lower **MAE** and **RMSE**, and higher **R²** confirm that the tuned model performs better than the baseline.
+            The best model showed improved MAE, RMSE, and R² performance compared to the untuned baseline.             
             """)
 
 
