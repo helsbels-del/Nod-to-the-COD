@@ -41,12 +41,15 @@ def page_cod_hypotheses_body():
                 "Chemical Oxygen Demand"])
             st.markdown(f"""
             - 📉 **Correlation coefficient:** `{correlation:.2f}`
-            - ❌ **Conclusion:** Not supported. The correlation is weak,
-              with no clear trend.
+            - ❌ **Conclusion:** Hypotheses Not supported. The correlation is
+              weak, with no clear trend.
             """)
-        # Hypothesis 2 — ML Prediction
-        with st.expander("📌 Hypothesis 2 — COD Can Be Predicted Using ML"):
-            st.markdown("""
+        st.error("❌ Hypothesis not supported. COD levels are not"
+                    " strongly correlated with temperature.")    
+
+    # Hypothesis 2 — ML Prediction
+    with st.expander("📌 Hypothesis 2 — COD Can Be Predicted Using ML"):
+        st.markdown("""
         **Hypothesis:**
         COD levels can be accurately predicted using operational and
                         environmental features.
@@ -59,65 +62,65 @@ def page_cod_hypotheses_body():
         if st.checkbox("🔍 Show model performance metrics"):
             st.markdown("#### 🧮 Regression Results")
             st.markdown("""
-            - **Tuned MAE:** 49.44
-            - **Tuned RMSE:** 73.60
-            - **Tuned R²:** 0.71 ✅
-            """)
+                - **Tuned MAE:** 49.44
+                - **Tuned RMSE:** 73.60
+                - **Tuned R²:** 0.71 ✅
+                """)
             st.markdown("#### 🧮 Classification Results (Confusion Matrix)")
             st.markdown("""
-            ```
-            | True ↓ / Pred → | Low | Med | High |
-            |------------------|-----|-----|------|
-            | Low              | 54  |  0  | 31   |
-            | Med              | 0   |  4  | 5    |
-            | High             | 22  |  1  | 160  |
-            ```
-            - This shows the model's predictions across 3 COD classes
-            """)
+                ```
+                | True ↓ / Pred → | Low | Med | High |
+                |------------------|-----|-----|------|
+                | Low              | 54  |  0  | 31   |
+                | Med              | 0   |  4  | 5    |
+                | High             | 22  |  1  | 160  |
+                ```
+                - This shows the model's predictions across 3 COD classes
+                """)
 
         if st.checkbox("📈 Show Feature Importance Plot"):
-            model = joblib.load("outputs/models/final_model.pkl")
-            features = model.feature_names_in_
-            importances = model.feature_importances_
+                model = joblib.load("outputs/models/final_model.pkl")
+                features = model.feature_names_in_
+                importances = model.feature_importances_
 
-            imp_df = pd.DataFrame({
-                "Feature": features,
-                "Importance": importances
-            }).sort_values(by="Importance", ascending=True)
+                imp_df = pd.DataFrame({
+                    "Feature": features,
+                    "Importance": importances
+                }).sort_values(by="Importance", ascending=True)
 
-            fig, ax = plt.subplots(figsize=(8, 6))
-            sns.barplot(x="Importance", y="Feature", data=imp_df, ax=ax)
-            ax.set_title("Feature Importance for COD Prediction")
-            ax.set_xlabel("Relative Feature Importance (Gini)")
-            st.pyplot(fig)
-
-        st.success("✅ Hypothesis supported. COD levels were predicted with"
-                   " good accuracy using Random Forest models.")
+                fig, ax = plt.subplots(figsize=(8, 6))
+                sns.barplot(x="Importance", y="Feature", data=imp_df, ax=ax)
+                ax.set_title("Feature Importance for COD Prediction")
+                ax.set_xlabel("Relative Feature Importance (Gini)")
+                st.pyplot(fig)        
 
         # 🔄 MAE + RMSE + R² Comparison
         if st.checkbox("📉 Show MAE, RMSE and R² Comparison Charts"):
-            st.image("outputs/figures/mae_rmse_comparison.png",
-                     caption="RMSE Comparison – Tuned vs Baseline")
-            st.image("outputs/figures/r2_comparison.png",
-                     caption="R² Comparison – Tuned vs Baseline",
-                     use_container_width=True)
-            st.markdown("""
-            These charts compare the model performance before and after
-                         hyperparameter tuning.
-            ✅Lower MAE and RMSE confirm that the tuning process significantly
-                         improved prediction accuracy.
-            #### 🔧 Tuning Details
-            Hyperparameter tuning was performed using `GridSearchCV` to
-                        optimise the Random Forest model.
-            The following parameters were tuned:
-            - `n_estimators`: number of trees in the forest
-            - `max_depth`: maximum depth of each tree
-            - `min_samples_split`: minimum number of samples required to split
-                        an internal node
+                st.image("outputs/figures/mae_rmse_comparison.png",
+                        caption="RMSE Comparison – Tuned vs Baseline")
+                st.image("outputs/figures/r2_comparison.png",
+                        caption="R² Comparison – Tuned vs Baseline",
+                        use_container_width=True)
+                st.markdown("""
+                These charts compare the model performance before and after
+                            hyperparameter tuning.
+                ✅Lower MAE and RMSE confirm that the tuning process significantly
+                            improved prediction accuracy.
+                #### 🔧 Tuning Details
+                Hyperparameter tuning was performed using `GridSearchCV` to
+                            optimise the Random Forest model.
+                The following parameters were tuned:
+                - `n_estimators`: number of trees in the forest
+                - `max_depth`: maximum depth of each tree
+                - `min_samples_split`: minimum number of samples required to split
+                            an internal node
 
-            The best model showed improved MAE, RMSE, and R² performance
-                        compared to the untuned baseline.
-            """)
+                The best model showed improved MAE, RMSE, and R² performance
+                            compared to the untuned baseline.
+                """)
+
+        st.success("✅ Hypothesis supported. COD levels were predicted with"
+                    " good accuracy using Random Forest models.")
 
     # Hypothesis 3 — Clustering
     with st.expander("📌 Hypothesis 3 — Operational Clustering"):
