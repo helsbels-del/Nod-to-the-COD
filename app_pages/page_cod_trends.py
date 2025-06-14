@@ -21,8 +21,11 @@ def page_cod_trends_body():
     st.markdown("---")
     st.markdown("### 📌 Feature vs COD Scatterplot")
     with st.expander("Explore scatterplot and correlation"):
-        features = [col for col in df.columns if col not in ["Chemical Oxygen Demand", "Month", "Cluster"]]
+        # Only include numeric features
+        numeric_features = df.select_dtypes(include='number').columns
+        features = [col for col in numeric_features if col not in ["Chemical Oxygen Demand"]]
         selected_feature = st.selectbox("Choose a feature to compare with COD:", features)
+
 
         fig2, ax2 = plt.subplots()
         sns.scatterplot(data=df, x=selected_feature, y="Chemical Oxygen Demand", ax=ax2, alpha=0.5)
