@@ -49,10 +49,12 @@ The dataset was cleaned and preprocessed to support time-series analysis, machin
 ## Business Requirements
 
 1. **Understand trends in COD levels over time**  
-   - Identify seasonal patterns and operational influences.  
+   - Identify seasonal patterns and operational influences.
+   - Business stakeholders need insights into how COD levels fluctuate across seasons and treatment conditions to help support process improvements and regulatory reporting.
 
 2. **Predict future COD levels using ML models**  
    - Support proactive treatment decisions.  
+   -The plant wants a predictive tool to estimate the COD levels in advance to help with chemical dosing to help reduce operational costs without compromising the effluent quality.
 
 3. **Test specific hypotheses related to operational/environmental drivers**  
    - Validate assumptions with data-backed insights.  
@@ -119,7 +121,7 @@ The dataset was cleaned and preprocessed to support time-series analysis, machin
 - Numeric COD prediction  
 - Displayed in a dashboard alongside observed values  
 
-**Current Workflow:** 
+**Current Workflow:**
 
 Operators rely on historical knowledge. This is reactive and may lead to overdosing or non-compliance.
 
@@ -181,21 +183,45 @@ Operators rely on historical knowledge. This is reactive and may lead to overdos
 - Dataset overview  
 - Key metrics  
 
-### 2. COD Trends (EDA)
+### 2. COD Trends and Analysis
 
 - COD by time, rainfall, season  
 - Feature relationships  
 
-### 3. Hypothesis Validation
+### 3. Predict COD
+
+- User can enter values for 3 variables to predict the COD
+
+### 4. Project Hypotheses
 
 - One expander per hypothesis  
 - Plots + markdown explanations  
 
-### 4. ML Performance
+# EPICS and User Stories
 
-- Regression/classification results  
-- Feature importances  
-- Pre/post tuning comparison plots  
+### Epic 1: Data Preparation
+
+- User Story 1.1: As a data scientist, I want to clean and format the dataset so I can analyse any trends and build models.
+  This is addressed in the Data Cleaning notebook where the data has been sorted and cleaned for analysis.
+- User Story 1.2: As a data scientist, I want to engineer a date feature to analyse seasonal patterns.
+  This is addressed in the Data cleaning notebook and the eda_cod_trends notebooks, creating Month and Month_Parsed features for time trend analysis.
+
+### Epic 2: Data Analysis
+
+- User Story 2.1: As a stakeholder, I want to see what environmental and operational variables influence COD so I can understand drivers of poor water quality.
+  This is addressed in eda_cod_trends notebook via correlation analysis and scatter plots.
+  
+### Epic 3: Machine Learning
+
+- User Story 3.1: As a data scientist, i want to train regression models to predict COD based on past data.
+  This is addressed in COD_Model_Development and model_tuning_and_comparison notebooks with Random Forest regression pipeline and tuning.
+- User Story 3.2: As a stakeholder, I want to evaluate model performance so that I can trust the predictions.
+  This is addressed in model_tuning_and_comparison notebook with MAE, RMSE, R² comparison plots. They can then make real time COD predictions on the Streamlit App
+
+### Epic 4: Visualisation and Reporting
+
+- Use Story 4.1: As as takeholder, I want a dashboard to explore COD trends and model predictions interactively.
+  This is addressed with the Steamlit dashboard which can be used to model predictions using selected features.
 
 ## Unfixed Bugs
 

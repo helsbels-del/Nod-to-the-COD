@@ -26,7 +26,7 @@ def page_cod_hypotheses_body():
         # COD vs Temperature
         if st.checkbox("📈 Show plot and correlation for COD vs Temperature"):
             df = pd.read_csv(
-                "outputs/datasets/collection/Data-Melbourns_F_fixed.csv",
+                "outputs/datasets/collection/Data-Melbourne_F_fixed.csv",
                 parse_dates=["date"])
             fig, ax = plt.subplots(figsize=(8, 6))
             sns.scatterplot(
