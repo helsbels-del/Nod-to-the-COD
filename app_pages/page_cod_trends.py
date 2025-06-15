@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
-import matplotlib.dates as mdates
+
 
 
 def page_cod_trends_body():
@@ -85,12 +85,28 @@ def page_cod_trends_body():
     st.markdown("---")
     st.markdown("### 🔥 Correlation Heatmap")
     with st.expander("View correlation heatmap"):
+        
         fig4, ax4 = plt.subplots(figsize=(10, 8))
         sns.heatmap(df.corr(numeric_only=True), annot=True, cmap="coolwarm",
                     fmt=".2f", ax=ax4)
         ax4.set_title("Feature Correlation Heatmap")
         st.pyplot(fig4)
+    # Select features
+        numeric_cols = df.select_dtypes(include='number').columns.tolist()
+        default_features = ["Chemical Oxygen Demand", "Biological Oxygen Demand", "Total Nitrogen"]
+        selected_features = st.multiselect("Choose variables to display", numeric_cols, default=default_features)
+
+        if len(selected_features) >= 2:
+            corr_matrix = df[selected_features].corr()
+            mask = np.triu(np.ones_like(corr_matrix, dtype=bool))
+            fig, ax = plt.subplots(figsize=(10, 8))
+            sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap="coolwarm", mask=mask, ax=ax)
+            ax.set_title("Feature Correlation Heatmap", fontsize=14)
+            st.pyplot(fig)
+        else:
+            st.warning("Please select at least two variables.")
 
     st.markdown("---")
     st.markdown("✅ Use these insights to inform your model and explore"
                 " hypothesis relationships.")
+        
