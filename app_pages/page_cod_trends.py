@@ -85,13 +85,18 @@ def page_cod_trends_body():
     st.markdown("---")
     st.markdown("### 🔥 Correlation Heatmap")
     with st.expander("View correlation heatmap"):
-        
+
+        # Full correlation heatmap with mask
+        corr_all = df.corr(numeric_only=True)
+        mask_all = np.triu(np.ones_like(corr_all, dtype=bool))
+
         fig4, ax4 = plt.subplots(figsize=(10, 8))
-        sns.heatmap(df.corr(numeric_only=True), annot=True, cmap="coolwarm",
-                    fmt=".2f", ax=ax4)
+        sns.heatmap(corr_all, annot=True, cmap="coolwarm",
+                    fmt=".2f", ax=ax4, mask=mask_all)
         ax4.set_title("Feature Correlation Heatmap")
         st.pyplot(fig4)
-    # Select features
+
+        # Select features
         numeric_cols = df.select_dtypes(include='number').columns.tolist()
         default_features = ["Chemical Oxygen Demand", "Biological Oxygen Demand", "Total Nitrogen"]
         selected_features = st.multiselect("Choose variables to display", numeric_cols, default=default_features)
@@ -107,6 +112,5 @@ def page_cod_trends_body():
             st.warning("Please select at least two variables.")
 
     st.markdown("---")
-    st.markdown("✅ Use these insights to inform your model and explore"
-                " hypothesis relationships.")
-        
+    st.markdown("✅ Use these insights to inform your model and explore hypothesis relationships.")
+
