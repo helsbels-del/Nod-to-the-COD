@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
+import matplotlib.dates as mdates
 
 
 def page_cod_trends_body():
@@ -49,17 +50,37 @@ def page_cod_trends_body():
     st.markdown("---")
     st.markdown("### 🌡️ COD Time Trend")
     with st.expander("View average monthly COD over time"):
-        if "date" in df.columns:
-            df['Month_Parsed'] = pd.to_datetime(df['date']).dt.to_period("M")
-            monthly_avg = df.groupby("Month_Parsed")[
-                "Chemical Oxygen Demand"].mean()
-            fig3, ax3 = plt.subplots()
-            monthly_avg.plot(ax=ax3)
-            ax3.set_title("Average COD by Month")
-            ax3.set_ylabel("COD (mg/L)")
-            st.pyplot(fig3)
-        else:
-            st.warning("Date column not found to calculate monthly average.")
+    
+
+        # Convert Period to Timestamp for better formatting
+        df['Month_Parsed'] = pd.to_datetime(df['date']).dt.to_period("M").dt.to_timestamp()
+        monthly_avg = df.groupby("Month_Parsed")["Chemical Oxygen Demand"].mean()
+
+        fig, ax = plt.subplots()
+
+        # Raw COD trend
+        ax.plot(df["Month_Parsed"], df["Chemical Oxygen Demand"], label="Chemical Oxygen Demand", color="gray", linewidth=1)
+
+        # Monthly average
+        monthly_avg = df.groupby("Month_Parsed")["Chemical Oxygen Demand"].mean()
+        ax.plot(monthly_avg.index, monthly_avg.values, label="Monthly Avg", linestyle="--", color="#1f77b4")
+
+        # Rolling average (3-month)
+        rolling_avg = df.set_index("Month_Parsed")["Chemical Oxygen Demand"].rolling(3).mean()
+        ax.plot(rolling_avg.index, rolling_avg.values, label="3-Month Rolling Avg", color="red", linewidth=1.0)
+
+        # Formatting
+        ax.set_title("Average COD by Month", fontsize=14, fontweight='bold')
+        ax.set_ylabel("COD (mg/L)")
+        ax.set_xlabel("Month")
+        ax.legend(loc="upper right")
+        ax.grid(True, linestyle='--', alpha=0.3)
+        fig.autofmt_xdate()
+        st.pyplot(fig)
+
+        st.caption("🔍 COD levels show seasonal fluctuations with peaks and troughs — useful for informing proactive planning.")
+
+
 
     st.markdown("---")
     st.markdown("### 🔥 Correlation Heatmap")
