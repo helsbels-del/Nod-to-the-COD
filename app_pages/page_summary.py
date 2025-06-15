@@ -29,18 +29,31 @@ def page_summary_body():
     """)
 
     st.subheader("📦 Dataset Overview")
+    st.markdown
     st.markdown("""
     The dataset represents operational and environmental data from a full-scale
-                 wastewater treatment plant.
+    wastewater treatment plant.
     It includes:
     - Water quality measures (COD, BOD, TN, etc.)
     - Weather data (temperature, rainfall, wind)
     - Plant inflow and outflow volumes
     """)
 
-    st.subheader("🎯 Business Objectives")
-    st.markdown("""
-    1. Identify key variables that influence COD levels throughout the year.
-    2. Enable predictive modelling to support optimal chemical dosing and
-                regulatory compliance.
-    """)
+    # Link to README file, so the users can have access to full project documentation
+    st.write(
+        f"For additional information, please visit and **read** the "
+        f"[Project README file](https://github.com/helsbels-del/Nod-to-the-COD).")
+
+    st.subheader("🎯 Business Requirements")
+
+    st.success("""
+        1. **Understand trends in COD levels over time**  
+          Identify seasonal patterns and operational influences.  
+
+        2. **Predict future COD levels using ML models**  
+          Support proactive treatment decisions.  
+
+        3. **Test specific hypotheses related to operational/environmental drivers**  
+          Validate assumptions with data-backed insights.  
+        """)
+
