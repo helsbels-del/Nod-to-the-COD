@@ -1,5 +1,5 @@
 import streamlit as st
-
+import pandas as pd
 
 def page_summary_body():
     st.title("📚 Welcome to 'Nod to the COD'")
@@ -38,6 +38,16 @@ def page_summary_body():
     - Weather data (temperature, rainfall, wind)
     - Plant inflow and outflow volumes
     """)
+    
+    df = pd.read_csv("outputs/datasets/collection/Data-Melbourne_F_fixed.csv", parse_dates=["date"])
+
+    # inspect data
+    if st.checkbox("View Dataset"):
+        st.write(
+            f"""📊 The dataset has {df.shape[0]} rows and {df.shape[1]} columns.  
+            Find below the first 10 rows."""
+        )
+        st.dataframe(df.head(10))
 
     # Link to README file, so the users can have access to full project documentation
     st.write(

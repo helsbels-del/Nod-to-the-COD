@@ -136,7 +136,7 @@ def page_cod_hypotheses_body():
         """)
 
         if st.checkbox("📉 Show cluster visualisation and interpretation"):
-            df_cluster = pd.read_csv("outputs/datasets/cluster_data.csv")
+            df_cluster = pd.read_csv("outputs/datasets/collection/cluster_data.csv")
 
             fig, ax = plt.subplots(figsize=(8, 6))
             sns.scatterplot(
