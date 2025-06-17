@@ -5,7 +5,6 @@ import seaborn as sns
 import numpy as np
 
 
-
 def page_cod_trends_body():
     st.title("📊 COD Trends & Analysis")
     st.markdown("Explore how COD levels vary over time and"
@@ -50,24 +49,31 @@ def page_cod_trends_body():
     st.markdown("---")
     st.markdown("### 🌡️ COD Time Trend")
     with st.expander("View average monthly COD over time"):
-    
 
         # Convert Period to Timestamp for better formatting
-        df['Month_Parsed'] = pd.to_datetime(df['date']).dt.to_period("M").dt.to_timestamp()
-        monthly_avg = df.groupby("Month_Parsed")["Chemical Oxygen Demand"].mean()
+        df['Month_Parsed'] = pd.to_datetime(df['date']).dt.to_period(
+           "M").dt.to_timestamp()
+        monthly_avg = df.groupby("Month_Parsed")[
+                                 "Chemical Oxygen Demand"].mean()
 
         fig, ax = plt.subplots()
 
         # Raw COD trend
-        ax.plot(df["Month_Parsed"], df["Chemical Oxygen Demand"], label="Chemical Oxygen Demand", color="gray", linewidth=1)
+        ax.plot(df["Month_Parsed"], df[
+                   "Chemical Oxygen Demand"], label="Chemical Oxygen Demand",
+                color="gray", linewidth=1)
 
         # Monthly average
-        monthly_avg = df.groupby("Month_Parsed")["Chemical Oxygen Demand"].mean()
-        ax.plot(monthly_avg.index, monthly_avg.values, label="Monthly Avg", linestyle="--", color="#1f77b4")
+        monthly_avg = df.groupby("Month_Parsed")[
+                                 "Chemical Oxygen Demand"].mean()
+        ax.plot(monthly_avg.index, monthly_avg.values, label="Monthly Avg",
+                linestyle="--", color="#1f77b4")
 
         # Rolling average (3-month)
-        rolling_avg = df.set_index("Month_Parsed")["Chemical Oxygen Demand"].rolling(3).mean()
-        ax.plot(rolling_avg.index, rolling_avg.values, label="3-Month Rolling Avg", color="red", linewidth=1.0)
+        rolling_avg = df.set_index("Month_Parsed")[
+                                   "Chemical Oxygen Demand"].rolling(3).mean()
+        ax.plot(rolling_avg.index, rolling_avg.values,
+                label="3-Month Rolling Avg", color="red", linewidth=1.0)
 
         # Formatting
         ax.set_title("Average COD by Month", fontsize=14, fontweight='bold')
@@ -77,10 +83,9 @@ def page_cod_trends_body():
         ax.grid(True, linestyle='--', alpha=0.3)
         fig.autofmt_xdate()
         st.pyplot(fig)
-
-        st.caption("🔍 COD levels show seasonal fluctuations with peaks and troughs — useful for informing proactive planning.")
-
-
+        st.caption(
+            "🔍 COD levels show seasonal fluctuations with peaks and troughs"
+            " — useful for informing proactive planning.")
 
     st.markdown("---")
     st.markdown("### 🔥 Correlation Heatmap")
@@ -98,19 +103,24 @@ def page_cod_trends_body():
 
         # Select features
         numeric_cols = df.select_dtypes(include='number').columns.tolist()
-        default_features = ["Chemical Oxygen Demand", "Biological Oxygen Demand", "Total Nitrogen"]
-        selected_features = st.multiselect("Choose variables to display", numeric_cols, default=default_features)
+        default_features = [
+            "Chemical Oxygen Demand", "Biological Oxygen Demand",
+            "Total Nitrogen"]
+        selected_features = st.multiselect(
+            "Choose variables to display", numeric_cols,
+            default=default_features)
 
         if len(selected_features) >= 2:
             corr_matrix = df[selected_features].corr()
             mask = np.triu(np.ones_like(corr_matrix, dtype=bool))
             fig, ax = plt.subplots(figsize=(10, 8))
-            sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap="coolwarm", mask=mask, ax=ax)
+            sns.heatmap(corr_matrix, annot=True, fmt=".2f",
+                        cmap="coolwarm", mask=mask, ax=ax)
             ax.set_title("Feature Correlation Heatmap", fontsize=14)
             st.pyplot(fig)
         else:
             st.warning("Please select at least two variables.")
 
     st.markdown("---")
-    st.markdown("✅ Use these insights to inform your model and explore hypothesis relationships.")
-
+    st.markdown("✅ Use these insights to inform your model"
+                "and explore hypothesis relationships.")

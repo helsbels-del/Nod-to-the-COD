@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 
+
 def page_summary_body():
     st.title("📚 Welcome to 'Nod to the COD'")
 
@@ -38,32 +39,34 @@ def page_summary_body():
     - Weather data (temperature, rainfall, wind)
     - Plant inflow and outflow volumes
     """)
-    
-    df = pd.read_csv("outputs/datasets/collection/Data-Melbourne_F_fixed.csv", parse_dates=["date"])
+
+    df = pd.read_csv("outputs/datasets/collection/Data-Melbourne_F_fixed.csv",
+                     parse_dates=["date"])
 
     # inspect data
     if st.checkbox("View Dataset"):
         st.write(
-            f"""📊 The dataset has {df.shape[0]} rows and {df.shape[1]} columns.  
+            f"""📊 The dataset has {df.shape[0]} rows and {df.shape[1]} columns.
             Find below the first 10 rows."""
         )
         st.dataframe(df.head(10))
 
-    # Link to README file, so the users can have access to full project documentation
+    # Link to README file, for access to full project documentation
     st.write(
         f"For additional information, please visit and **read** the "
-        f"[Project README file](https://github.com/helsbels-del/Nod-to-the-COD).")
+        f"[Project README file]"
+        f"(https://github.com/helsbels-del/Nod-to-the-COD).")
 
     st.subheader("🎯 Business Requirements")
 
     st.success("""
-        1. **Understand trends in COD levels over time**  
-          Identify seasonal patterns and operational influences.  
+        1. **Understand trends in COD levels over time**
+          Identify seasonal patterns and operational influences.
 
-        2. **Predict future COD levels using ML models**  
-          Support proactive treatment decisions.  
+        2. **Predict future COD levels using ML models**
+          Support proactive treatment decisions.
 
-        3. **Test specific hypotheses related to operational/environmental drivers**  
-          Validate assumptions with data-backed insights.  
+        3. **Test specific hypotheses related to operational/environmental
+                drivers**
+          Validate assumptions with data-backed insights.
         """)
-
