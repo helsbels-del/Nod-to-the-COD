@@ -13,7 +13,8 @@
 - [ML Business Case](#ml-business-case)
 - [Dashboard Design](#dashboard-design)
 - [Epics and User Stories](#epics-and-user-stories)
-- [Bugs and Fixes](#bugs-and-fixes)
+- [Unfixed Bugs](#unfixed-bugs)
+- [Testing](#testing)
 - [Deployment](#deployment)
 - [Libraries Used](#libraries-used)
 - [Credits](#credits)
@@ -229,7 +230,14 @@ Operators rely on historical knowledge. This is reactive and may lead to overdos
 
   This is addressed with the Steamlit dashboard which can be used to model predictions using selected features.
 
-## Bugs and Fixes
+## Unfixed Bugs
+
+There were no unfixed bugs at the time of submission of my project.
+
+## Testing
+
+All the .py files were run through the CI Python Linter and all pages were clear with no errors at the time of submitting my project.
+All streamlit app pages were checked to make sure the tick boxes loaded the relevant plots and information.
 
 ## Deployment
 
